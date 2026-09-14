@@ -14,3 +14,6 @@ const header = document.querySelector('[data-header]');
     window.addEventListener('scroll', () => {
       header.classList.toggle('is-scrolled', window.scrollY > 24);
     });
+
+    // Preview cleanup: remove the temporary email-provider setup note under the signup form.
+    document.querySelectorAll('.signup small').forEach((note) => note.remove());
