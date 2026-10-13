@@ -27,5 +27,23 @@ const header = document.querySelector('[data-header]');
     img.src = 'https://raw.githubusercontent.com/CharlotteMeckBlackHeritage/PAAAH-Website/preview/' + encodeURIComponent(photographs[index]);
     img.alt = photographs[index].replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
     img.loading = 'lazy';
+    const captions = [
+      { title: 'Jimmie McKee at Excelsior Club', credit: 'UNC Charlotte J. Murrey Atkins Archives' },
+      { title: 'Newspaper carriers', credit: 'Robinson Spangler Room' },
+      { title: 'Johnson C. Smith Students studying', credit: 'Johnson C. Smith Archives' }
+    ];
+    const caption = img.closest('figure')?.querySelector('figcaption');
+    if (caption && index < captions.length) {
+      caption.replaceChildren();
+      caption.append(document.createTextNode(captions[index].title));
+      const credit = document.createElement('span');
+      credit.textContent = captions[index].credit;
+      caption.append(credit);
+      img.alt = captions[index].title;
+    } else if (caption) {
+      caption.querySelectorAll('span').forEach((span) => {
+        if (/provenance\s+pending/i.test(span.textContent || '')) span.remove();
+      });
+    }
   });
 })();
