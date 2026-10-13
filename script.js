@@ -47,3 +47,18 @@ const header = document.querySelector('[data-header]');
     }
   });
 })();
+
+// Preview: replace feature-card placeholder artwork with uploaded archive photos.
+(() => {
+  const images = ['Excelsior002.jpg', 'Excelsior003.jpg', 'DSC_0072.JPG'];
+  document.querySelectorAll('.feature-grid .flip-card-front').forEach((card, index) => {
+    if (index >= images.length) return;
+    const url = 'https://raw.githubusercontent.com/CharlotteMeckBlackHeritage/PAAAH-Website/preview/' + encodeURIComponent(images[index]);
+    card.style.backgroundImage = 'linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.65)), url("' + url + '")';
+    card.style.backgroundSize = 'cover';
+    card.style.backgroundPosition = 'center';
+    card.querySelectorAll('span, p').forEach((element) => {
+      if (/placeholder image/i.test(element.textContent || '')) element.remove();
+    });
+  });
+})();
