@@ -48,17 +48,29 @@ const header = document.querySelector('[data-header]');
   });
 })();
 
-// Preview: replace feature-card placeholder artwork with uploaded archive photos.
+// Preview: show archive photos on the reverse of the feature cards, not the title side.
 (() => {
   const images = ['DSC_0072.JPG', 'Celebrating 50 Years of Civil Rights Advocacy-4495.jpg', 'Allegra Westbrooks2.jpg'];
-  document.querySelectorAll('.feature-grid .flip-card-front').forEach((card, index) => {
+  document.querySelectorAll('.feature-grid article.flip-card').forEach((card, index) => {
     if (index >= images.length) return;
+    const front = card.querySelector('.flip-card-front');
+    const back = card.querySelector('.flip-card-back');
     const url = 'https://raw.githubusercontent.com/CharlotteMeckBlackHeritage/PAAAH-Website/preview/' + encodeURIComponent(images[index]);
-    card.style.backgroundImage = 'linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.65)), url("' + url + '")';
-    card.style.backgroundSize = 'cover';
-    card.style.backgroundPosition = 'center';
-    card.querySelectorAll('span, p').forEach((element) => {
-      if (/placeholder image/i.test(element.textContent || '')) element.remove();
-    });
+    if (front) {
+      front.style.backgroundImage = 'none';
+      front.querySelectorAll('span, p').forEach((element) => {
+        if (/placeholder image/i.test(element.textContent || '')) element.remove();
+      });
+    }
+    if (back) {
+      back.style.backgroundImage = 'url("' + url + '")';
+      back.style.backgroundSize = 'cover';
+      back.style.backgroundPosition = 'center';
+      const existingImage = back.querySelector('img');
+      if (existingImage) {
+        existingImage.src = url;
+        existingImage.alt = card.querySelector('h3')?.textContent?.trim() || 'Archival photograph';
+      }
+    }
   });
 })();
