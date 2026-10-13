@@ -50,7 +50,7 @@ const header = document.querySelector('[data-header]');
 
 // Preview: replace feature-card placeholder artwork with uploaded archive photos.
 (() => {
-  const images = ['Excelsior002.jpg', 'Excelsior003.jpg', 'DSC_0072.JPG'];
+  const images = ['DSC_0072.JPG', 'Celebrating 50 Years of Civil Rights Advocacy-4495.jpg', 'Allegra Westbrooks2.jpg'];
   document.querySelectorAll('.feature-grid .flip-card-front').forEach((card, index) => {
     if (index >= images.length) return;
     const url = 'https://raw.githubusercontent.com/CharlotteMeckBlackHeritage/PAAAH-Website/preview/' + encodeURIComponent(images[index]);
