@@ -17,3 +17,15 @@ const header = document.querySelector('[data-header]');
 
     // Preview cleanup: remove the temporary email-provider setup note under the signup form.
     document.querySelectorAll('.signup small').forEach((note) => note.remove());
+
+// Preview gallery: replace unavailable placeholder sources with archived photographs.
+(() => {
+  const photographs = ["Excelsior004.jpg","carolina room.jpg","jcsu students.jpg","jcsu cheerleaders.jpg","Celebrating 50 Years of Civil Rights Advocacy-4495.jpg","Hats on for T.D. - 90th Birthday Celebration-64.jpg","League of Women Voters - 2017 Annual Meeting-48.jpg","Allegra Westbrooks2.jpg","CMBHC Thereasea C. Elder Trailblazer Award 2015-18.jpg","CMBHC Thereasea C. Elder Trailblazer Award '15-28.jpg","DSC_0072.JPG"];
+  const galleryImages = document.querySelectorAll('.gallery-grid img');
+  galleryImages.forEach((img, index) => {
+    if (index >= photographs.length) return;
+    img.src = './' + encodeURIComponent(photographs[index]);
+    img.alt = photographs[index].replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+    img.loading = 'lazy';
+  });
+})();
