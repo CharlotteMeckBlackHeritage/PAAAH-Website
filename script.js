@@ -17,3 +17,60 @@ const header = document.querySelector('[data-header]');
 
     // Preview cleanup: remove the temporary email-provider setup note under the signup form.
     document.querySelectorAll('.signup small').forEach((note) => note.remove());
+
+// Preview gallery: replace unavailable placeholder sources with archived photographs.
+(() => {
+  const photographs = ["Excelsior004.jpg","carolina room.jpg","jcsu students.jpg","jcsu cheerleaders.jpg","Celebrating 50 Years of Civil Rights Advocacy-4495.jpg","Hats on for T.D. - 90th Birthday Celebration-64.jpg","League of Women Voters - 2017 Annual Meeting-48.jpg","Allegra Westbrooks2.jpg","CMBHC Thereasea C. Elder Trailblazer Award 2015-18.jpg","CMBHC Thereasea C. Elder Trailblazer Award '15-28.jpg","DSC_0072.JPG"];
+  const galleryImages = document.querySelectorAll('.gallery-grid img');
+  galleryImages.forEach((img, index) => {
+    if (index >= photographs.length) return;
+    img.src = 'https://raw.githubusercontent.com/CharlotteMeckBlackHeritage/PAAAH-Website/main/' + encodeURIComponent(photographs[index]);
+    img.alt = photographs[index].replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+    img.loading = 'lazy';
+    const captions = [
+      { title: 'Jimmie McKee at Excelsior Club', credit: 'UNC Charlotte J. Murrey Atkins Archives' },
+      { title: 'Newspaper carriers', credit: 'Robinson Spangler Room' },
+      { title: 'Johnson C. Smith Students studying', credit: 'Johnson C. Smith Archives' }
+    ];
+    const caption = img.closest('figure')?.querySelector('figcaption');
+    if (caption && index < captions.length) {
+      caption.replaceChildren();
+      caption.append(document.createTextNode(captions[index].title));
+      const credit = document.createElement('span');
+      credit.textContent = captions[index].credit;
+      caption.append(credit);
+      img.alt = captions[index].title;
+    } else if (caption) {
+      caption.querySelectorAll('span').forEach((span) => {
+        if (/provenance\s+pending/i.test(span.textContent || '')) span.remove();
+      });
+    }
+  });
+})();
+
+// Preview: show archive photos on the reverse of the feature cards, not the title side.
+(() => {
+  const images = ['DSC_0072.JPG', 'Celebrating 50 Years of Civil Rights Advocacy-4495.jpg', 'Allegra Westbrooks2.jpg'];
+  document.querySelectorAll('.feature-grid article.flip-card').forEach((card, index) => {
+    if (index >= images.length) return;
+    const front = card.querySelector('.flip-card-front');
+    const back = card.querySelector('.flip-card-back');
+    const url = 'https://raw.githubusercontent.com/CharlotteMeckBlackHeritage/PAAAH-Website/main/' + encodeURIComponent(images[index]);
+    if (front) {
+      front.style.backgroundImage = 'none';
+      front.querySelectorAll('span, p').forEach((element) => {
+        if (/placeholder image/i.test(element.textContent || '')) element.remove();
+      });
+    }
+    if (back) {
+      back.style.backgroundImage = 'url("' + url + '")';
+      back.style.backgroundSize = 'cover';
+      back.style.backgroundPosition = 'center';
+      const existingImage = back.querySelector('img');
+      if (existingImage) {
+        existingImage.src = url;
+        existingImage.alt = card.querySelector('h3')?.textContent?.trim() || 'Archival photograph';
+      }
+    }
+  });
+})();
