@@ -24,7 +24,7 @@ const header = document.querySelector('[data-header]');
   const galleryImages = document.querySelectorAll('.gallery-grid img');
   galleryImages.forEach((img, index) => {
     if (index >= photographs.length) return;
-    img.src = './' + encodeURIComponent(photographs[index]);
+    img.src = 'https://raw.githubusercontent.com/CharlotteMeckBlackHeritage/PAAAH-Website/preview/' + encodeURIComponent(photographs[index]);
     img.alt = photographs[index].replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
     img.loading = 'lazy';
   });
